@@ -1,0 +1,407 @@
+GAMS 41.5.0  2a5a4ddc Jan 3, 2023           WEX-WEI x86 64bit/MS Windows - 02/09/23 16:24:42 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  *************************************************************************
+   2  ***      Taller 1: generalizar el problema de la dieta                ***
+   3  ***                                                                   ***
+   4  ***      Autores: Nicolas Klopstock, Juan Camilo Falla                ***
+   5  ***      Codigos: 202021352, 201922219                                ***
+   6  *************************************************************************
+   7   
+   8  Sets
+   9   i       alimento / carne, arroz, leche, pan /
+  10   j       caracteristicas / calorias, proteinas, azucares, grasas, carbohidratos, precio /
+  11  ;
+  12   
+  13  Table productos(i, j)
+  14           calorias  proteinas  azucares  grasas  carbohidratos  precio
+  15  carne    287       26         0         19.3    0              3000
+  16  arroz    204       4.2        0.01      0.5     44.1           1000
+  17  leche    146       8          13        8       11             600
+  18  pan      245       6          25        0.8     55             700
+  19  ;
+  20   
+  21  Variables
+  22   z       funcion objetivo
+  23   C(i)    carne
+  24   A(i)    arroz
+  25   L(i)    leche
+  26   P(i)    pan
+  27  ;
+  28   
+  29  Positive Variables
+  30   C
+  31   A
+  32   L
+  33   P
+  34  ;
+  35   
+  36  Equations
+  37   funcionObjetivo
+  38   restrCal(j)
+  39   restrProt(j)
+  40   restrAz(j)
+  41   restrGras(j)
+  42   restrCarbo(j)
+  43  ;
+  44   
+  45  funcionObjetivo             ..      z =e= sum((i), productos(i, 'precio') * C(i) + productos(i, 'precio') * A(i) + productos(i, 'precio') * L(i) + productos(i, 'precio') * P(i));
+  46  restrCal(j)$(ord(j)=1)      ..      sum((i), productos(i, j) * C(i) + productos(i, j) * A(i) + productos(i, j) * L(i) + productos(i, j) * P(i)) =g= 1500;
+  47  restrProt(j)$(ord(j)=2)     ..      sum((i), productos(i, j) * C(i) + productos(i, j) * A(i) + productos(i, j) * L(i) + productos(i, j) * P(i)) =g= 63;
+  48  restrAz(j)$(ord(j)=3)       ..      sum((i), productos(i, j) * C(i) + productos(i, j) * A(i) + productos(i, j) * L(i) + productos(i, j) * P(i)) =l= 25;
+  49  restrGras(j)$(ord(j)=4)     ..      sum((i), productos(i, j) * C(i) + productos(i, j) * A(i) + productos(i, j) * L(i) + productos(i, j) * P(i)) =l= 50;
+  50  restrCarbo(j)$(ord(j)=5)    ..      sum((i), productos(i, j) * C(i) + productos(i, j) * A(i) + productos(i, j) * L(i) + productos(i, j) * P(i)) =l= 200;
+  51   
+  52  Model diet /all/ ;
+  53   
+  54  option mip=CPLEX;
+  55  Solve diet using mip minimizing z;
+  56   
+  57  Display C.l;
+  58  Display A.l;
+  59  Display L.l;
+  60  Display P.l;
+  61  Display z.l;
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  41.5.0 2a5a4ddc WEX-WEI
+GAMS 41.5.0  2a5a4ddc Jan 3, 2023           WEX-WEI x86 64bit/MS Windows - 02/09/23 16:24:42 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE diet Using MIP From line 55
+
+
+---- funcionObjetivo  =E=  
+
+funcionObjetivo..  z - 3000*C(carne) - 1000*C(arroz) - 600*C(leche) - 700*C(pan) - 3000*A(carne) - 1000*A(arroz) - 600*A(leche) - 700*A(pan) - 3000*L(carne) - 1000*L(arroz) - 600*L(leche) - 700*L(pan) - 3000*P(carne) - 1000*P(arroz) - 600*P(leche) - 700*P(pan) =E= 0 ; (LHS = 0)
+     
+
+---- restrCal  =G=  
+
+restrCal(calorias)..  287*C(carne) + 204*C(arroz) + 146*C(leche) + 245*C(pan) + 287*A(carne) + 204*A(arroz) + 146*A(leche) + 245*A(pan) + 287*L(carne) + 204*L(arroz) + 146*L(leche) + 245*L(pan) + 287*P(carne) + 204*P(arroz) + 146*P(leche) + 245*P(pan) =G= 1500 ; (LHS = 0, INFES = 1500 ****)
+     
+
+---- restrProt  =G=  
+
+restrProt(proteinas)..  26*C(carne) + 4.2*C(arroz) + 8*C(leche) + 6*C(pan) + 26*A(carne) + 4.2*A(arroz) + 8*A(leche) + 6*A(pan) + 26*L(carne) + 4.2*L(arroz) + 8*L(leche) + 6*L(pan) + 26*P(carne) + 4.2*P(arroz) + 8*P(leche) + 6*P(pan) =G= 63 ; (LHS = 0, INFES = 63 ****)
+     
+
+---- restrAz  =L=  
+
+restrAz(azucares)..  0.01*C(arroz) + 13*C(leche) + 25*C(pan) + 0.01*A(arroz) + 13*A(leche) + 25*A(pan) + 0.01*L(arroz) + 13*L(leche) + 25*L(pan) + 0.01*P(arroz) + 13*P(leche) + 25*P(pan) =L= 25 ; (LHS = 0)
+     
+
+---- restrGras  =L=  
+
+restrGras(grasas)..  19.3*C(carne) + 0.5*C(arroz) + 8*C(leche) + 0.8*C(pan) + 19.3*A(carne) + 0.5*A(arroz) + 8*A(leche) + 0.8*A(pan) + 19.3*L(carne) + 0.5*L(arroz) + 8*L(leche) + 0.8*L(pan) + 19.3*P(carne) + 0.5*P(arroz) + 8*P(leche) + 0.8*P(pan) =L= 50 ; (LHS = 0)
+     
+
+---- restrCarbo  =L=  
+
+restrCarbo(carbohidratos)..  44.1*C(arroz) + 11*C(leche) + 55*C(pan) + 44.1*A(arroz) + 11*A(leche) + 55*A(pan) + 44.1*L(arroz) + 11*L(leche) + 55*L(pan) + 44.1*P(arroz) + 11*P(leche) + 55*P(pan) =L= 200 ; (LHS = 0)
+     
+GAMS 41.5.0  2a5a4ddc Jan 3, 2023           WEX-WEI x86 64bit/MS Windows - 02/09/23 16:24:42 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE diet Using MIP From line 55
+
+
+---- z  funcion objetivo
+
+z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       funcionObjetivo
+
+
+---- C  carne
+
+C(carne)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+    -3000       funcionObjetivo
+      287       restrCal(calorias)
+       26       restrProt(proteinas)
+       19.3     restrGras(grasas)
+
+C(arroz)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+    -1000       funcionObjetivo
+      204       restrCal(calorias)
+        4.2     restrProt(proteinas)
+        0.01    restrAz(azucares)
+        0.5     restrGras(grasas)
+       44.1     restrCarbo(carbohidratos)
+
+C(leche)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+     -600       funcionObjetivo
+      146       restrCal(calorias)
+        8       restrProt(proteinas)
+       13       restrAz(azucares)
+        8       restrGras(grasas)
+       11       restrCarbo(carbohidratos)
+
+REMAINING ENTRY SKIPPED
+
+---- A  arroz
+
+A(carne)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+    -3000       funcionObjetivo
+      287       restrCal(calorias)
+       26       restrProt(proteinas)
+       19.3     restrGras(grasas)
+
+A(arroz)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+    -1000       funcionObjetivo
+      204       restrCal(calorias)
+        4.2     restrProt(proteinas)
+        0.01    restrAz(azucares)
+        0.5     restrGras(grasas)
+       44.1     restrCarbo(carbohidratos)
+
+A(leche)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+     -600       funcionObjetivo
+      146       restrCal(calorias)
+        8       restrProt(proteinas)
+       13       restrAz(azucares)
+        8       restrGras(grasas)
+       11       restrCarbo(carbohidratos)
+
+REMAINING ENTRY SKIPPED
+
+---- L  leche
+
+L(carne)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+    -3000       funcionObjetivo
+      287       restrCal(calorias)
+       26       restrProt(proteinas)
+       19.3     restrGras(grasas)
+
+L(arroz)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+    -1000       funcionObjetivo
+      204       restrCal(calorias)
+        4.2     restrProt(proteinas)
+        0.01    restrAz(azucares)
+        0.5     restrGras(grasas)
+       44.1     restrCarbo(carbohidratos)
+
+L(leche)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+     -600       funcionObjetivo
+      146       restrCal(calorias)
+        8       restrProt(proteinas)
+       13       restrAz(azucares)
+        8       restrGras(grasas)
+       11       restrCarbo(carbohidratos)
+
+REMAINING ENTRY SKIPPED
+
+---- P  pan
+
+P(carne)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+    -3000       funcionObjetivo
+      287       restrCal(calorias)
+       26       restrProt(proteinas)
+       19.3     restrGras(grasas)
+
+P(arroz)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+    -1000       funcionObjetivo
+      204       restrCal(calorias)
+        4.2     restrProt(proteinas)
+        0.01    restrAz(azucares)
+        0.5     restrGras(grasas)
+       44.1     restrCarbo(carbohidratos)
+
+P(leche)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+     -600       funcionObjetivo
+      146       restrCal(calorias)
+        8       restrProt(proteinas)
+       13       restrAz(azucares)
+        8       restrGras(grasas)
+       11       restrCarbo(carbohidratos)
+
+REMAINING ENTRY SKIPPED
+GAMS 41.5.0  2a5a4ddc Jan 3, 2023           WEX-WEI x86 64bit/MS Windows - 02/09/23 16:24:42 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE diet Using MIP From line 55
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 2.500E+01, 1.500E+03] - Zero values observed as well
+Bound     [min, max] : [        NA,        NA] - Zero values observed as well
+Matrix    [min, max] : [ 1.000E-02, 3.000E+03]
+
+GAMS 41.5.0  2a5a4ddc Jan 3, 2023           WEX-WEI x86 64bit/MS Windows - 02/09/23 16:24:42 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE diet Using MIP From line 55
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           6     SINGLE EQUATIONS            6
+BLOCKS OF VARIABLES           5     SINGLE VARIABLES           17
+NON ZERO ELEMENTS            89
+
+
+GENERATION TIME      =        0.016 SECONDS      4 MB  41.5.0 2a5a4ddc WEX-WEI
+GAMS 41.5.0  2a5a4ddc Jan 3, 2023           WEX-WEI x86 64bit/MS Windows - 02/09/23 16:24:42 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE diet Using MIP From line 55
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   diet                OBJECTIVE  z
+     TYPE    MIP                 DIRECTION  MINIMIZE
+     SOLVER  CPLEX               FROM LINE  55
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE             9307.9977
+
+ RESOURCE USAGE, LIMIT          0.000 10000000000.000
+ ITERATION COUNT, LIMIT         4    2147483647
+--- *** This solver runs with a community license. No commercial use.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.0.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.02 ticks)
+
+
+Optimal solution found
+Objective:         9307.997731
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU funcionOb~          .              .              .             1.0000      
+
+---- EQU restrCal  
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+calorias      1500.0000      1500.0000        +INF           10.4530      
+
+---- EQU restrProt  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+proteinas        63.0000        67.9273        +INF             .          
+
+---- EQU restrAz  
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+azucares        -INF           25.0000        25.0000       -49.5228      
+
+---- EQU restrGras  
+
+              LOWER          LEVEL          UPPER         MARGINAL
+
+grasas        -INF           43.7630        50.0000          .          
+
+---- EQU restrCarbo  
+
+                     LOWER          LEVEL          UPPER         MARGINAL
+
+carbohidratos        -INF          200.0000       200.0000       -25.6669      
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR z                 -INF         9307.9977        +INF             .          
+
+  z  funcion objetivo
+
+---- VAR C  carne
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+carne          .              .            +INF            EPS         
+arroz          .              .            +INF      2.273737E-13      
+leche          .              .            +INF      1.705303E-13      
+pan            .              .            +INF          788.7731      
+
+---- VAR A  arroz
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+carne          .              .            +INF            EPS         
+arroz          .              .            +INF      2.273737E-13      
+leche          .              .            +INF      1.705303E-13      
+pan            .              .            +INF          788.7731      
+
+---- VAR L  leche
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+carne          .              .            +INF            EPS         
+arroz          .              .            +INF      2.273737E-13      
+leche          .              .            +INF      1.705303E-13      
+pan            .              .            +INF          788.7731      
+
+---- VAR P  pan
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+carne          .             1.3666        +INF             .          
+arroz          .             4.0562        +INF             .          
+leche          .             1.9200        +INF             .          
+pan            .              .            +INF          788.7731      
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 41.5.0  2a5a4ddc Jan 3, 2023           WEX-WEI x86 64bit/MS Windows - 02/09/23 16:24:42 Page 7
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     57 VARIABLE C.L  carne
+
+                      ( ALL       0.000 )
+
+
+----     58 VARIABLE A.L  arroz
+
+                      ( ALL       0.000 )
+
+
+----     59 VARIABLE L.L  leche
+
+                      ( ALL       0.000 )
+
+
+----     60 VARIABLE P.L  pan
+
+carne 1.367,    arroz 4.056,    leche 1.920
+
+
+----     61 VARIABLE z.L                   =     9307.998  funcion objetivo
+
+
+EXECUTION TIME       =        0.094 SECONDS      4 MB  41.5.0 2a5a4ddc WEX-WEI
+
+
+USER: GAMS Community License for Nicolas Klopstock   G230125|0002AO-GEN
+      Universidad de los Andes, Computer and Systems Engineering CL4985
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\Nicolas\Universidad\6. Semestre\Modelado, Optimización y Simulación\Ejercicios\Capitulo 1\Taller 1 - ejDietaGenerico.gms
+Output     C:\Users\Nicolas\Universidad\6. Semestre\Modelado, Optimización y Simulación\Ejercicios\Capitulo 1\Taller 1 - ejDietaGenerico.lst
