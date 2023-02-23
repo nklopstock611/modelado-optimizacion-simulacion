@@ -14,7 +14,6 @@ t4  84  84  88  83  84  85
 Variables
 z
 x(i,j)
-c(j)
 ;
 
 Binary Variable
@@ -23,11 +22,17 @@ x
 
 Equations
 funcionObj
-restCantCie(j)
 restCient(j)
 restTec(i)
 ;
 
 funcionObj     ..  z=e=sum((i,j), x(i,j)*des(i,j));
-restCient(j)   ..  sum((j), x(i,j)) =e= 1;
-restTec(i)     ..  sum((i), x(i,j)) =e= 1;
+restCient(j)   ..  sum((i), x(i,j)) =l= 1;
+restTec(i)     ..  sum((j), x(i,j)) =e= 1;
+
+model cientificos /all/;
+
+option mip = CPLEX;
+Solve cientificos using mip maximizing z;
+Display z.l;
+Display x.l;
