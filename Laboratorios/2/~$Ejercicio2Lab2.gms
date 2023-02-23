@@ -29,5 +29,6 @@ restTec(i)
 ;
 
 funcionObj     ..  z=e=sum((i,j), x(i,j)*des(i,j));
-restCient(j)   ..  sum((j), x(i,j)) =e= 1;
-restTec(i)     ..  sum((i), x(i,j)) =e= 1;
+restCient(j)   ..  sum((i), x(i,j)) =e= 1;
+restTec(i)     ..  sum((j), x(i,j)) =e= 1;
+restCantCie(j) ..
