@@ -13,13 +13,11 @@ e4  2   4   6   10
 
 Variables
  z
- e(i, j)       saber si el empleado i escogió
- t(i, j)       saber si el trabajo j se escogió
+ x(i, j)    saber si se escogió el empleado i con el trabajo j
 ;
 
 Binary Variables
- e
- t
+ x
 ;
 
 Equations
@@ -28,9 +26,9 @@ Equations
  restrTrabajos(i)
 ;
 
-funcionObjetivo       ..      z =e= sum((i, j), horas(i, j));
-restrEmpleados(j)     ..      sum((i), e(i, j)) =e= 1;
-restrTrabajos(i)      ..      sum((j), t(i, j)) =e= 1;
+funcionObjetivo       ..      z =e= sum((i, j), x(i, j) * horas(i, j));
+restrEmpleados(j)     ..      sum((i), x(i, j)) =e= 1;
+restrTrabajos(i)      ..      sum((j), x(i, j)) =e= 1;
 
 Model modelHoras /all/ ;
 
@@ -38,5 +36,5 @@ option mip=CPLEX;
 Solve modelHoras using mip minimizing z;
 
 Display z.l;
-Display e.l;
-*Display t.l;
+Display x.l;
+
