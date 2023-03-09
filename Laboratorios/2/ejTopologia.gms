@@ -1,6 +1,6 @@
 Sets
  i      nodos / n1*n7 /
- c      coordenadas / co1*co7 /
+ c      coordenadas / x, y /
 ;
 
 Alias (j, i)
@@ -23,36 +23,42 @@ Parameter
 Scalar d;
 
 loop((i, j),
-    d = sqrt( () )
+    d = sqrt( sqr(conexionesRaw(i, 'x') - conexionesRaw(j, 'x')) + sqr(conexionesRaw(i, 'y') - conexionesRaw(j, 'y')) );
+    Display d;
+    if(d <= 20 and d > 0,
+        conexiones(i, j) = d;
+    elseif(d = 0),
+        conexiones(i, j) = 999;
+    else
+        conexiones(i, j) = 999;
+    );
 );
 
-d=√((x_2-x_1)²+(y_2-y_1)²)
-*Variables
-* z      función objetivo
-* x(i, j)    saber si el enlace i-j se escogió o no
-*;
+Variables
+ z      función objetivo
+ x(i, j)    saber si el enlace i-j se escogió o no
+;
 
-*Binary Variable
-* x
-*;
+Binary Variable
+ x
+;
 
-*Equations
-* funcionObjetivo
-* restrNodoOrigen(i)
-* restrNodoDestino(j)
-* restrNodoInter(i)
-*;
+Equations
+ funcionObjetivo
+ restrNodoOrigen(i)
+ restrNodoDestino(j)
+ restrNodoInter(i)
+;
 
-*funcionObjetivo                                     ..      z =e= sum((i, j), conexiones(i, j) * x(i, j));
-*restrNodoOrigen(i)$(ord(i) = 4)                     ..      sum((j), x(i, j)) =e= 1;
-*restrNodoDestino(j)$(ord(j) = 6)                    ..      sum((i), x(i, j)) =e= 1;
-*restrNodoInter(i)$(ord(i) <> 4 and ord(i) <> 6)     ..      sum((j), x(i, j)) - sum((j), x(j, i)) =e= 0;
+funcionObjetivo                                     ..      z =e= sum((i, j), conexiones(i, j) * x(i, j));
+restrNodoOrigen(i)$(ord(i) = 4)                     ..      sum((j), x(i, j)) =e= 1;
+restrNodoDestino(j)$(ord(j) = 6)                    ..      sum((i), x(i, j)) =e= 1;
+restrNodoInter(i)$(ord(i) <> 4 and ord(i) <> 6)     ..      sum((j), x(i, j)) - sum((j), x(j, i)) =e= 0;
 
-*Model topologia /all/;
-
-*Option mip=CPLEX;
-*Solve topologia using mip minimizing z;
+Model topologia /all/;
+Option mip=CPLEX;
+Solve topologia using mip minimizing z;
 
 Display conexiones;
-*Display x.l;
-*Display z.l;
+Display x.l;
+Display z.l;
