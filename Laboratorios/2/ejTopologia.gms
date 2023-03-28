@@ -34,6 +34,8 @@ loop((i, j),
     );
 );
 
+Display conexiones;
+
 Variables
  z      función objetivo
  x(i, j)    saber si el enlace i-j se escogió o no
