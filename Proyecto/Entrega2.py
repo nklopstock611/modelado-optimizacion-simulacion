@@ -79,6 +79,14 @@ def restr5_rule(Model,j):
 
 
 Model.obj = Objective(rule=objective_rule, sense=minimize)
+Model.restriccion_murales = Constraint(Model.deseados, rule=restriccion_murales)
+Model.solo_un_refresco = Constraint(rule=solo_un_refresco)
+Model.restriccion_enlaces = Constraint(rule=restriccion_enlaces)
+Model.restr2 = Constraint(Model.totales, rule=restr2_rule)
+Model.restr3 = Constraint(Model.totales, Model.totales, rule=restr3_rule)
+Model.restr4 = Constraint(Model.totales, rule=restr4_rule)
+Model.restr5 = Constraint(Model.totales, rule=restr5_rule)
+
 #Model.obj = Objective(expr=sum(Model.matriz_costos[i,j]*Model.x[i] for i in Model.totales for j in Model.totales), sense=minimize)
 
 
