@@ -52,10 +52,10 @@ Model.y = Var(Model.totales, Model.totales, Model.enlacesR ,within=Binary)
 
 #TSP
 def objective_rule(Model):
-    return sum(Model.matriz_costos[i,j,k]*Model.x[i] for i in Model.totales for j in Model.totales for k in Model.enlacesR)
+    return sum(Model.matriz_costos[i,j]*Model.x[i] for i in Model.totales for j in Model.totales)
 
 def restriccion_murales(Model, murales_deseados):
-    return sum(Model.matriz_nodosy[i,1] * Model.x[i] for i in Model.nodos_totales) == murales_deseados
+    return sum(Model.matriz_nodos[i,1] * Model.x[i] for i in Model.totales) == murales_deseados
 
 # restricción de que solo se puede visitar un nodo refresco, es decir que la matriz en la columna 3 solo puede tener un 1
 def solo_un_refresco(Model):
@@ -63,7 +63,7 @@ def solo_un_refresco(Model):
 
 #restriccion que dice si solo se puede visitar un enlace de un nodo a otro 
 def restriccion_enlaces(Model):
-    return sum(Model.y[i,j,k] for i in Model.totales for j in Model.totales for k in Model.enlacesR) + sum(Model.y[j,i,k] for i in Model.totales for j in Model.totales for k in Model.enlacesR) <= 1
+    return sum(Model.y[i] for i in Model.totales) + sum(Model.y[i] for i in Model.totales ) <= 1
 
 def restr2_rule(Model, k):
     return sum(Model.x[i, j, k] for i in Model.totales for j in Model.totales) == 1
