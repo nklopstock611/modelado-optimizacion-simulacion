@@ -40,7 +40,6 @@ n6   0    0    0
 * t1 -> hotel
 * t2 -> murales
 * t3 -> parques
-* t4 -> lugares random
 
 Set links(i,j);
 
