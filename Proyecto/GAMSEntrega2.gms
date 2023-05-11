@@ -34,8 +34,13 @@ n2   0    1    0
 n3   0    1    0
 n4   0    1    0
 n5   0    0    1
-n6   0    0    1
+n6   0    0    0
 ;
+
+* t1 -> hotel
+* t2 -> murales
+* t3 -> parques
+* t4 -> lugares random
 
 Set links(i,j);
 
@@ -111,4 +116,6 @@ option mip=SCIP
 Solve model1 using mip minimizing z;
 
 Display x.l;
+Display w.l;
+Display p.l;
 Display z.l;
