@@ -8,13 +8,13 @@ $Set MUST_VISIT 3
 Sets
   i   network nodes / n1*n%NODES% /
   f   secuencia de cada enlace seleccionado / f1*f%MUST_VISIT% /
-  g   secuencia de cada enlace seleciconado / g1*g%MUST_VISIT% /
   t   secuencia de tipos de nodos / t1*t%TYPES% /
 
-alias(j,i);
-alias(k,i);
-
-alias(d,f);
+  alias(j,i)
+  alias(f,g)
+  alias(k,i)
+  alias(d,f)
+;
 
 Table c(i,j) link cost
                  n1       n2      n3      n4      n5     n6
@@ -64,7 +64,7 @@ restr1(i,j,f)
 restr2(i,j,f,g)
 restr3(f)
 restr4(i,j)
-restr5(i,j)
+restr5(i,f)
 restr6(i,j,f,d)
 restr7(i,j,f)
 restr8(i,j,f)
