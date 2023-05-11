@@ -52,7 +52,6 @@ Loop( (i,j),
 
 Variables
   x(i,j,f)      Indicates if the link i-j is selected or not.
-  y(i,t)        Indica si el tipo de nodo.
   w(i)          Lleva cuenta de los murales visitados.
   p(i)          Lleva cuenta de los lugares de descanso visitados.
   z             Objective function.
@@ -60,6 +59,7 @@ Variables
 
 Binary Variable x;
 Binary Variable w;
+Binary Variable p;
 
 Equations
 objectiveFunction        objective function
