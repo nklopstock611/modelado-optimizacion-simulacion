@@ -84,7 +84,7 @@ objectiveFunction                                           ..      z =e= sum((i
 restr1(i,j,f)                                               ..      x(i,j,f) + x(j,i,f) =l= 1;
 
 *No repetir enlace "de regreso" ej. enlace 2-5, 5-2
-restr2(i,j,f,g)$(ord(f) <> ord(g))                          ..      x(i,j,f) + x(j,i,g) =l= 1;           
+restr2(i,j,f,g)$(ord(f) <> ord(g))                            ..      x(i,j,f) + x(j,i,g) =l= 1;           
 
 *Por cada e, solo un (i,j) debe ser escogido.
 restr3(f)                                                   ..      sum((i,j), x(i,j,f)) =e= 1;
