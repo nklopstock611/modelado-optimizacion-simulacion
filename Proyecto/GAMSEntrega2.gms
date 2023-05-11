@@ -95,6 +95,7 @@ restr4(i,j)                                                 ..      sum(f, x(i,j
 *Para el nodo inicial i=1, debe salir un enlace y ademas activamos el y(j,e) correspondiente.
 restr5(i,f)$(ord(i)=%SOURCE% and ord(f)=1)                  ..      sum(j, x(i,j,f)) =e= 1;
 
+*** Permite que si entra un f1 tiene que salir e2 mientras f sea menor a la cantidad de enlaces que son requeridos para completar el ciclo
 restr6(i,j,f,d)$(ord(d)=ord(f)+1 and ord(f)<%MUST_VISIT%)   ..      sum((k)$(links(j,k)), x(j,k,d))=g=x(i,j,f);
 
 ** Restricciones de cantidades de murales deseados. Por cada enlace se revisan las selecciones de nodos **
