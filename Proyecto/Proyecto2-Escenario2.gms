@@ -55,7 +55,6 @@ Loop( (i,j),
       )
 );
 
-
 Variables
   x(i,j,f)      Indicates if the link i-j is selected or not.
   w(i)          Lleva cuenta de los nodos visitados.
