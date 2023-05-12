@@ -58,9 +58,7 @@ Loop( (i,j),
 
 Variables
   x(i,j,f)      Indicates if the link i-j is selected or not.
-  y(i,t)        Indica si el tipo de nodo.
-  w(i)          Lleva cuenta de los murales visitados.
-  p(i)          Lleva cuenta de los lugares de descanso visitados.
+  w(i)          Lleva cuenta de los nodos visitados.
   z             Objective function.
 ;
 
@@ -80,8 +78,9 @@ restr7(i,j,f)
 restr8(i,j,f)
 restr9
 restr10
-restr11(j,f)
-restr12
+restr11
+restr12(j,f)
+restr13(i)
 ;
 
 objectiveFunction                                           ..      z =e= sum((i,j,f), c(i,j) * x(i,j,f));
@@ -113,14 +112,17 @@ restr8(i,j,f)                                               ..      w(j) =g= x(i
 
 restr9                                                      ..      sum(i, w(i)*type(i,"t2")) =e= %DESIRED%;
 
-restr12                                                     ..      sum(i, w(i)) =e= %MUST_VISIT%;  
+restr10                                                     ..      sum(i, w(i)) =e= %MUST_VISIT%;  
 
 ** Por cada enlace se recisa para ver si cumple con las restricciones de refrescos **
 
-restr10                                                     ..      sum(i, w(i)*type(i,"t3")) =e= 1;
+restr11                                                     ..      sum(i, w(i)*type(i,"t3")) =e= 1;
 
-* El nodo SOURCE no puede ser un intermedio del TSP
-restr11(j,f)$(ord(j)=%SOURCE% and ord(f)=%MUST_VISIT%)      ..      sum(i, x(i,j,f)) =e= 1;
+* El nodo SOURCE no puede ser un intermedio del TSP y forzarlo para que quede cierre el loop.
+restr12(j,f)$(ord(j)=%SOURCE% and ord(f)=%MUST_VISIT%)      ..      sum(i, x(i,j,f)) =e= 1;
+
+restr13(i)                                                  ..      sum((j,f), x(i,j,f)) =l= 1;
+* =l= porque no tiene que pasar por todos los nodos.
 
 Model model1 /all/ ;
 option mip=SCIP
