@@ -9,39 +9,8 @@ S.A:
 """
 
 from random import randint
-#import numpy as np
-#import matplotlib.pyplot as plt
-
-adyancencias = [
-                    {(0, 0): [(0, 80), (40, 0)]},
-                    {(0, 80): [(0, 0), (20, 60)]},
-                    {(20, 60): [(0, 80), (40, 20)]},
-                    {(40, 20): [(20, 60), (40, 0)]},
-                    {(40, 0): [(0, 0), (40, 20)]}
-               ]
-
-def funcion_objetivo(x1: int, x2: int) -> int:
-    return 3 * x1 + 2 * x2
-
-def simplex(adyacencias: list) -> tuple:
-    maximiza = 0
-    centinela = True
-
-    while centinela:
-        rand_int = randint(0, len(adyacencias) - 1)
-        rand_coords = list(adyacencias[rand_int].keys())[0]
-        fo_izq = funcion_objetivo(adyacencias[rand_int][rand_coords][0][0], adyacencias[rand_int][rand_coords][0][1])
-        fo_act = funcion_objetivo(rand_coords[0], rand_coords[1])
-        fo_der = funcion_objetivo(adyacencias[rand_int][rand_coords][1][0], adyacencias[rand_int][rand_coords][1][1])
-
-        if fo_act >= fo_izq and fo_act >= fo_der:
-            maximiza = fo_act
-            centinela = False
-
-
-    return maximiza, rand_coords
-
-print(simplex(adyancencias))
+import numpy as np
+import matplotlib.pyplot as plt
 
 def draw_fiasable_region():
     # Definir las restricciones
@@ -76,4 +45,35 @@ def draw_fiasable_region():
     # Mostrar el gráfico
     plt.show()
 
+draw_fiasable_region()
 
+adyancencias = [
+                    {(0, 0): [(0, 80), (40, 0)]},
+                    {(0, 80): [(0, 0), (20, 60)]},
+                    {(20, 60): [(0, 80), (40, 20)]},
+                    {(40, 20): [(20, 60), (40, 0)]},
+                    {(40, 0): [(0, 0), (40, 20)]}
+               ]
+
+def funcion_objetivo(x1: int, x2: int) -> int:
+    return 3 * x1 + 2 * x2
+
+def simplex(adyacencias: list) -> tuple:
+    maximiza = 0
+    centinela = True
+
+    while centinela:
+        rand_int = randint(0, len(adyacencias) - 1)
+        rand_coords = list(adyacencias[rand_int].keys())[0]
+        fo_izq = funcion_objetivo(adyacencias[rand_int][rand_coords][0][0], adyacencias[rand_int][rand_coords][0][1])
+        fo_act = funcion_objetivo(rand_coords[0], rand_coords[1])
+        fo_der = funcion_objetivo(adyacencias[rand_int][rand_coords][1][0], adyacencias[rand_int][rand_coords][1][1])
+
+        if fo_act >= fo_izq and fo_act >= fo_der:
+            maximiza = fo_act
+            centinela = False
+
+
+    return maximiza, rand_coords
+
+print(simplex(adyancencias))
