@@ -2,6 +2,8 @@ from pyomo.environ import *
 from pyomo.opt import SolverFactory
 import matplotlib.pyplot as plt
 
+# Codigo hecho por Juan Camilo Falla 201922219 y Nicolas Klopstock 202021352
+
 def delete_component(Model, comp_name):
 
         list_del = [vr for vr in vars(Model)
