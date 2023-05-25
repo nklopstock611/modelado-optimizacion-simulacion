@@ -31,33 +31,78 @@ class Node:
     def add_connection(self, node, weight):
         self.connections[node] = weight
 
+INF = float("inf")
+
 graph = [
-    Node(5, "parque"),
+    Node(1, "hotel"),
     Node(2, "mural"),
     Node(3, "mural"),
     Node(4, "mural"),
-    Node(1, "hotel"),
+    Node(5, "parque"),
     Node(6, "mural"),
-    Node(7, "parque")
 ]
 
-graph[1].add_connection(graph[2], 3)  # Conexión entre mural 2 y mural 3 con peso 3
-graph[2].add_connection(graph[4], 2)  # Conexión entre mural 3 y parque 5 con peso 2
-graph[3].add_connection(graph[5], 4)  # Conexión entre mural 4 y parque 5 con peso 4
+graph[0].add_connection(graph[0], INF)
+graph[0].add_connection(graph[1], 2)
+graph[0].add_connection(graph[2], 5)
+graph[0].add_connection(graph[3], 5)
+graph[0].add_connection(graph[4], 2)
+graph[0].add_connection(graph[5], 9)
+
+graph[1].add_connection(graph[1], INF)
+graph[0].add_connection(graph[0], 2)
+graph[2].add_connection(graph[2], 3)
+graph[3].add_connection(graph[3], 5)
+graph[4].add_connection(graph[4], 1)
+graph[5].add_connection(graph[5], 9)
+
+graph[2].add_connection(graph[2], INF)
+graph[0].add_connection(graph[0], 5)
+graph[1].add_connection(graph[1], 3)
+graph[3].add_connection(graph[3], 2)
+graph[4].add_connection(graph[4], 3)
+graph[5].add_connection(graph[5], 11)
+
+graph[3].add_connection(graph[3], INF)
+graph[0].add_connection(graph[0], 5)
+graph[1].add_connection(graph[1], 5)
+graph[2].add_connection(graph[2], 2)
+graph[4].add_connection(graph[4], 4)
+graph[5].add_connection(graph[5], 12)
+
+graph[4].add_connection(graph[4], INF)
+graph[0].add_connection(graph[0], 2)
+graph[1].add_connection(graph[1], 2)
+graph[2].add_connection(graph[2], 3)
+graph[3].add_connection(graph[3], 4)
+graph[5].add_connection(graph[5], 4)
+
+graph[5].add_connection(graph[5], INF)
+graph[0].add_connection(graph[0], 6)
+graph[1].add_connection(graph[1], 2)
+graph[2].add_connection(graph[2], 3)
+graph[3].add_connection(graph[3], 6)
+graph[4].add_connection(graph[4], 4)
 
 num_murals = 3 #len([node for node in graph if node.type == "mural"])
 num_parques = 1 #len([node for node in graph if node.type == "parque"])
 num_hoteles = 1
 path_permutations = list(generate_path_permutations(graph, num_murals, num_parques, num_hoteles))
-for path in path_permutations:
-    for node in path:
-        print(node.id)
-    print()
+
+# for path in path_permutations:
+#     for node in path:
+#         print(node.id)
+#     print()
 
 def valid_permutations(permutations):
     # toca recorrer cada arreglo de permutaciones y verificar
     # cuales permutaciones son válidad según las conexiones.
-    pass
+    for path in path_permutations:
+        for node in path:
+            print(node.connections)
+        print()
+
+print(valid_permutations(path_permutations))
 
 def get_path_costs(permutation):
     # toca recorrer cada arreglo de permutaciones válidas
