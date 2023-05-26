@@ -64,36 +64,38 @@ graph[5].add_connection(graph[3], 6)
 graph[5].add_connection(graph[4], 4)
 
 def generate_path_permutations(graph, num_murales, num_parques, num_hoteles):
-    # Obtener los nodos del grafo por tipo
+    
+    # nodos del grafo por tipo
     parks = [node for node in graph if node.type == "parque"]
     murals = [node for node in graph if node.type == "mural"]
-    hotel = [node for node in graph if node.type == "hotel"][0]  # Asumimos que solo hay un nodo tipo hotel
-
-    # Generar todas las permutaciones posibles de los murales
-    mural_permutations = permutations(murals)
+    hotel = [node for node in graph if node.type == "hotel"][0] # solo queremos el único hotel
     
-    # Generar todas las permutaciones posibles de los parques
+    # generar todas las permutaciones para cada tipo de nodo (excepto hotel)
+    mural_permutations = permutations(murals)
     park_permutations = permutations(parks)
     
-    # Generar todas las permutaciones posibles de los caminos
+    # generar todas las permutaciones posibles de los caminos
     for mural_permutation in mural_permutations:
         for park_permutation in park_permutations:
-            # Construir el camino con el hotel, los murales y el parque
+
+            # construir permutaciones de posibles caminos
             path = [hotel] + list(mural_permutation) + list(park_permutation)
             path_permutations = permutations(path, num_hoteles + num_parques + num_murales)
             
             return path_permutations
 
 def valid_permutations(permutations, num_murales, num_parques, num_hoteles):
-    # toca recorrer cada arreglo de permutaciones y verificar
-    # cuales permutaciones son válidad según las conexiones.
+    # se recorre cada arreglo de permutaciones y se verifica
+    # cuáles permutaciones son válidas según las conexiones
+    # y cantidad de nodos de cada tipo.
     
-    validos = []
+    validos = [] # arreglo para guardar las permutaciones válidas
     for path in permutations:
         cont_murals = 0
         cont_parques = 0
         cont_hoteles = 0
-        nodo_hotel = None
+
+        # revisión de cantidad de tipos de nodos
         for node in path:
             if node.type == "mural":
                 cont_murals += 1
@@ -107,6 +109,8 @@ def valid_permutations(permutations, num_murales, num_parques, num_hoteles):
     
     for path in validos:
         for j, act_node in enumerate(path):
+
+            # revisión de existencia de caminos
             if j < len(path) - 1:
                 next_node = path[j + 1]
                 if next_node not in act_node.connections:
@@ -119,7 +123,8 @@ def valid_permutations(permutations, num_murales, num_parques, num_hoteles):
     return validos
     
 def get_path_cost(permutation):
-    # toca recorrer cada arreglo de permutaciones válidas.
+    # se recorre cada arreglo de permutaciones válidas.
+    
     cost_path = 0
 
     for j, act_node in enumerate(permutation):
@@ -133,8 +138,9 @@ def get_path_cost(permutation):
     return cost_path
 
 def min_cost_path(permutations):
-    # toca sacar el costo de cada arreglo de permutaciones
-    # y encontrar el mínimo mínimo.
+    # se calcula el costo de cada arreglo de permutaciones
+    # y se encuentra el mínimo entre ellos.
+
     min_cost = INF
     min_path = None
 
@@ -146,14 +152,16 @@ def min_cost_path(permutations):
 
     return min_path
 
-def print_path(path):       
+def print_path(path):
+    # imprimir el camino mínimo
+
     path = path + (path[0],)
     for node in path:
         print(node.id)
 
-num_murales = 1
-num_parques = 1 
-num_hoteles = 1
+num_murales = 1 # se quiere ver un mural
+num_parques = 1 # se quiere visitar un parque
+num_hoteles = 1 # solo hay un hotel
 path_permutations = list(generate_path_permutations(graph, num_murales, num_parques, num_hoteles))
 valid = valid_permutations(path_permutations, num_murales, num_parques, num_hoteles)
 print_path(min_cost_path(valid))
