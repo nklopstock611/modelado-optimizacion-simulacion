@@ -96,12 +96,14 @@ def valid_permutations(permutations, num_murales, num_parques, num_hoteles):
 
         # revisión de cantidad de tipos de nodos
         for node in path:
+            if path[0].type == "hotel":
+                cont_hoteles = 1
+            else:
+                break
             if node.type == "mural":
                 cont_murals += 1
             elif node.type == "parque":
                 cont_parques += 1
-            else:
-                cont_hoteles += 1
             
         if cont_murals == num_murales and cont_parques == num_parques and cont_hoteles == num_hoteles:
             validos.append(path)

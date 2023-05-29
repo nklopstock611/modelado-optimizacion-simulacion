@@ -148,13 +148,15 @@ def valid_permutations(permutations, num_murales, num_parques, num_hoteles):
 
         # revisión de cantidad de tipos de nodos
         for node in path:
+            if path[0].type == "hotel":
+                cont_hoteles = 1
+            else:
+                break
             if node.type == "mural":
                 cont_murals += 1
             elif node.type == "parque":
                 cont_parques += 1
-            else:
-                cont_hoteles += 1
-            
+                    
         if cont_murals == num_murales and cont_parques == num_parques and cont_hoteles == num_hoteles:
             validos.append(path)
     
@@ -186,6 +188,15 @@ def get_path_cost(permutation):
         elif j == len(permutation) - 1:
             next_node = permutation[0]
             cost_path += act_node.connections[next_node]
+
+    # p = [graph[0], graph[2], graph[8], graph[7], graph[4], graph[3]]
+    # c = permutation[0] == p[0] and permutation[1] == p[1] and permutation[2] == p[2] and permutation[3] == p[3] and permutation[4] == p[4] and permutation[5] == p[5]
+    # if c:
+    #     for node in permutation:
+    #         print(node.id)
+        
+    #     print(cost_path)
+    #     print()
 
     return cost_path
 
