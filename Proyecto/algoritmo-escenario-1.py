@@ -114,7 +114,8 @@ def valid_permutations(permutations, num_murales, num_parques, num_hoteles):
                 next_node = path[j + 1]
                 if next_node not in act_node.connections:
                     break
-            elif j == len(path):
+            # revisa existencia de camino entre el último nodo y el primero
+            elif j == len(path) - 1:
                 next_node = path[0]
                 if next_node not in act_node.connections:
                     break
