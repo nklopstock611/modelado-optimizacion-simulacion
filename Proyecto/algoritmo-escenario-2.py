@@ -220,4 +220,3 @@ num_hoteles = 1 # solo hay un hotel
 path_permutations = list(generate_path_permutations(graph, num_murales, num_parques, num_hoteles))
 valid = valid_permutations(path_permutations, num_murales, num_parques, num_hoteles)
 print_path(min_cost_path(valid)[0], min_cost_path(valid)[1])
-

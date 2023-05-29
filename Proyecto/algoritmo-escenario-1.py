@@ -77,7 +77,6 @@ def generate_path_permutations(graph, num_murales, num_parques, num_hoteles):
     # generar todas las permutaciones posibles de los caminos
     for mural_permutation in mural_permutations:
         for park_permutation in park_permutations:
-
             # construir permutaciones de posibles caminos
             path = [hotel] + list(mural_permutation) + list(park_permutation)
             path_permutations = permutations(path, num_hoteles + num_parques + num_murales)
@@ -150,19 +149,22 @@ def min_cost_path(permutations):
             min_cost = cost_path
             min_path = path
 
-    return min_path
+    return min_path, min_cost
 
-def print_path(path):
+def print_path(path, cost):
     # imprimir el camino mínimo
 
     path = path + (path[0],)
+    camino = ""
     for node in path:
-        print(node.id)
+        camino += str(node.id) + " -> "
+
+    print("Camino: " + camino[:-4])
+    print("Costo: " + str(cost))
 
 num_murales = 1 # se quiere ver un mural
 num_parques = 1 # se quiere visitar un parque
 num_hoteles = 1 # solo hay un hotel
 path_permutations = list(generate_path_permutations(graph, num_murales, num_parques, num_hoteles))
 valid = valid_permutations(path_permutations, num_murales, num_parques, num_hoteles)
-print_path(min_cost_path(valid))
-
+print_path(min_cost_path(valid)[0], min_cost_path(valid)[1])
